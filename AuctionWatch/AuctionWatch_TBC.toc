@@ -2,7 +2,7 @@
 ## Title: Auction Watch -WotLK
 ## Notes: Reminds you to log back into a toon after posting auction(s).
 ## DefaultState: enabled
-## Version: 1.0.1
+## Version: 1.0.1a
 ## Author: Gildina
 
 ## SavedVariables: aWatchDB
