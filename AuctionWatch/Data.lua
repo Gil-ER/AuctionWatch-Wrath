@@ -3,6 +3,7 @@ local _, aw = ...;
 
 function AuctionWatchGetAuctions()
 	--Global function that returns the number of active auctions
+	--Can be called from command line '/run AuctionWatchGetAuctions()'
 	return aw.auctionCount;
 end;
 
