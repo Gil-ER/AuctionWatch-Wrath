@@ -1,5 +1,5 @@
 ## Interface: 30400
-## Title: Auction Watch -WotLK
+## Title: Auction Watch - Classic
 ## Notes: Reminds you to log back into a toon after posting auctions.
 ## DefaultState: enabled
 ## Version: 1.0.1a
