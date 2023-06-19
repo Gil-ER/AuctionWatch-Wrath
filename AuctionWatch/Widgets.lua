@@ -1,13 +1,10 @@
-local addon, aw = ...;
+-- Edited Jun 19, 2023
 
---**********************************************************************************
---	Checkbox widget
---**********************************************************************************
+local addon, aw = ...;
 local frameCount = 0;
 function aw:createCheckBox(opts)	
-	frameCount = frameCount + 1;		--count each frame created
+	frameCount = frameCount + 1;		
 	if opts.name == nil or opts.name == "" then
-		--Unique name generator, addonName + string + counterValue
 		opts.name = addon .. "GeneratedCheckboxNumber" .. frameCount;
 	end;
 	local cb = CreateFrame("CheckButton", opts.name, opts.parent, "ChatConfigCheckButtonTemplate");
@@ -16,29 +13,21 @@ function aw:createCheckBox(opts)
 	local txt = opts.parent:CreateFontString(nil, "OVERLAY", "GameFontWhite");
 	txt:SetPoint("BOTTOMLEFT", cb, "BOTTOMRIGHT", 5, 10);
 	txt:SetText(opts.caption);	
-	--cb:SetScript( "OnClick", function() opts.pressFunc() end);
 	cb.tooltip = opts.ttip;	
 	return cb, txt;
 end
-
---**********************************************************************************
---	Button widget
---**********************************************************************************
 local buttonCount = 0;
 function aw:createButton(opts)
-	buttonCount = buttonCount + 1;		--Counts each button created
+	buttonCount = buttonCount + 1;		
 	if opts.name == nil or opts.name == "" then
-		--Unique name generator, addonName + string + counterValue
 		opts.name = addon .. "GeneratedButtonNumber" .. buttonCount;
 	end;	
 	local btn = CreateFrame("Button",  opts.name, opts.parent, "GameMenuButtonTemplate");
-	--position, size and add title to the frame
 	btn:SetSize(opts.width, opts.height);
 	btn:SetText(opts.caption);
 	btn:SetNormalFontObject("GameFontNormalLarge");
 	btn:SetHighlightFontObject("GameFontHighlightLarge");
 	btn:SetPoint(opts.anchor, opts.relFrame, opts.relPoint, opts.xOff, opts.yOff);
-	--Add a tooltip if one was provided
 	if (opts.ttip ~= nil) or (opts.ttip ~= "") then 
 		btn:SetScript("OnEnter", function()
 			GameTooltip:SetOwner(btn, "LEFT");
@@ -47,7 +36,6 @@ function aw:createButton(opts)
 		end);
 		btn:SetScript("OnLeave", function() GameTooltip:Hide(); end);
 	end;
-	--Button function
 	if opts.pressFunc ~= nil then 
 		btn:SetScript("OnClick", function(self, button, down)
 			opts.pressFunc(self, button)
@@ -55,27 +43,19 @@ function aw:createButton(opts)
 	end;
 	return b;	
 end;
-
---**********************************************************************************
---	Frame widget
---**********************************************************************************
 local frameCount = 0;
 function aw:createFrame(opts)
-	frameCount = frameCount + 1;		--count each frame created
+	frameCount = frameCount + 1;		
 	if opts.name == nil or opts.name == "" then
-		--Unique name generator, addonName + string + counterValue
 		opts.name = addon .. "GeneratedFrameNumber" .. frameCount;
 	end;
-	local f = CreateFrame("Frame", opts.name, opts.parent, "UIPanelDialogTemplate"); 
+	local f = CreateFrame("Frame", opts.name, opts.parent, "ButtonFrameTemplate");
 	f:SetSize(opts.width, opts.height);
 	f:SetPoint(opts.anchor, opts.relFrame, opts.relPoint, opts.xOff, opts,yOff);
 	if opts.title ~= nil then
-		--Add the title if one was provided
-		f.Title:SetJustifyH("CENTER");
-		f.Title:SetText( opts.title );
+		_G[f:GetName() .. "TitleText"]:SetText( opts.title );
 	end;
 	if opts.isMovable then
-		--Make movable if flag set
 		f:EnableMouse(true);
 		f:SetMovable(true);
 		f:SetUserPlaced(true); 
@@ -84,7 +64,6 @@ function aw:createFrame(opts)
 		f:SetScript("OnDragStop", function(self) self:StopMovingOrSizing(); end);
 	end;
 	if opts.isResizable then
-		--Make frame Resizable if flag was set
 		f:SetResizable(true);
 		f:SetScript("OnMouseDown", function()
 			f:StartSizing("BOTTOMRIGHT")
@@ -94,17 +73,12 @@ function aw:createFrame(opts)
 		end);
 		f:SetScript("OnSizeChanged", OnSizeChanged);
 	end;
-	return f;		--return the frame
+	return f;		
 end;
-
---**********************************************************************************
---	Slider widget
---**********************************************************************************
 local sliderCount = 0;
 function aw:createSlider(opts)
-	sliderCount = sliderCount + 1;		--Counts each button created
+	sliderCount = sliderCount + 1;		
 	if opts.name == nil or opts.name == "" then
-		--Unique name generator, addonName + string + counterValue
 		opts.name = addon .. "GeneratedSliderNumber" .. sliderCount;
 	end
 	local slide = CreateFrame("Slider", opts.name, opts.parent, "OptionsSliderTemplate");	

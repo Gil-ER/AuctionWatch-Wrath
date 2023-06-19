@@ -1,25 +1,24 @@
---aw namespace variable
+-- Edited Jun 19, 2023
+
 local _, aw = ...;
 local currentSort;
-
 local TimePassed = function (t)
 	local timespan = (time() - t);
 	local days = 0;
 	local hours = 0;
 	local mins = 0;
-	local d = 24*60*60		--seconds/day
-	local h = 60*60			--seconds/hour
-	local m = 60			--seconds/min
-	
-	while timespan > d do		--while timespan > 1 day
+	local d = 24*60*60		
+	local h = 60*60			
+	local m = 60			
+	while timespan > d do		
 		days = days + 1;
 		timespan = timespan - d;
 	end;
-	while timespan > h do		--while timespan > 1 hour
+	while timespan > h do		
 		hours = hours + 1;
 		timespan = timespan - h;
 	end;
-	while timespan > m do		--while timespan > 1 min
+	while timespan > m do		
 		mins = mins + 1;
 		timespan = timespan - m;
 	end;
@@ -27,44 +26,35 @@ local TimePassed = function (t)
 	if mins == "0" then mins = "00"; end;
 	return days, hours, mins;
 end
-
 function aw:ExpiredAuctions()
-	--Check to see if any toons have auctions past the set number of days
-	local t = time() - ( aw:GetSetting("Days") * 24 * 60 * 60 ) --current time - (seconds in set number of days)
+	local t = time() - ( aw:GetSetting("Days") * 24 * 60 * 60 ) 
 	if aWatchDB["Auctions"] ~= nil then
 		for cName, cTable in pairs(aWatchDB["Auctions"]) do
 			if cTable["time"]  < t then 
-				--Older than x days return true
 				return true;
 			end;
 		end;
 	end;
 	return false;
 end
-
 function aw:VeryOldAuctions()
-	--checkes if any toon has auctions older than 25 days
-	--returns true or false
-	local t = time() - ( 25 * 24 * 60 * 60 ) --current time - (seconds in 25 days)
+	local t = time() - ( 25 * 24 * 60 * 60 ) 
 	if aWatchDB.Auctions ~= nil then
 		for cName, cTable in pairs(aWatchDB.Auctions) do
 			if cTable.time < t then 
-				--Older than x days return true
 				return true;
 			end;
 		end;
 	end;
 	return false;
 end;
-
 function aw:ReportAuctionsToChat()
-	--List a report to chat of toons with auctions
 	local auc = {};
 	local i = 1;
-	local t = time() - (aw:GetSetting("Days") * 24 * 60 * 60)				--days to seconds before current time
-	if aWatchDB["Auctions"] ~= nil then								--read all auction data into a local table
+	local t = time() - (aw:GetSetting("Days") * 24 * 60 * 60)				
+	if aWatchDB["Auctions"] ~= nil then								
 		for cName, cTable in pairs(aWatchDB["Auctions"]) do
-			if aw:GetSetting("OnlyOver") then 			--if flag is set only get older records
+			if aw:GetSetting("OnlyOver") then 			
 				if cTable["time"] < t then
 					auc[#auc + 1] = {["name"] = cName; ["count"] = cTable["count"]; ["time"] = cTable["time"] };
 				end;
@@ -73,23 +63,19 @@ function aw:ReportAuctionsToChat()
 			end;
 		end;
 	end;		
-	--Print to chat 
 	if aw:GetSetting("ByDate") then
-		--Sort by date
 		if aw:GetSetting("Asc") then		
 			table.sort (auc, function(a,b) return a.time < b.time; end);
 		else
 			table.sort (auc, function(a,b) return a.time > b.time; end);
 		end;	
 	else
-		--Sort by number of auctions
 		if aw:GetSetting("Asc") then		
 			table.sort (auc, function(a,b) return a.count < b.count; end);
 		else
 			table.sort (auc, function(a,b) return a.count > b.count; end);
 		end;	
 	end;
-	
 	for k, v in pairs(auc) do
 		local d, h, m = TimePassed(v.time)
 		local dt = h .. ":" .. m;
@@ -101,9 +87,7 @@ function aw:ReportAuctionsToChat()
 		end
 	end
 end
-
 function aw:ReportAuctionsToWindow( flag )
-	--List a report to window of toons with auctions
 	local byDate = aw:GetSetting("ByDate");
 	if flag == nil then currentSort = byDate; end;
 	if flag == true then currentSort = not currentSort; byDate = currentSort; end;
@@ -111,21 +95,19 @@ function aw:ReportAuctionsToWindow( flag )
 	aw.Output:Show();
 	local auc = {};
 	local i = 1;
-	local t = time() - (aw:GetSetting("Days") * 24 * 60 * 60)	--days to seconds before current time
-	if aWatchDB ~= nil and aWatchDB["Auctions"] ~= nil then								--read all auction data into a local table
+	local t = time() - (aw:GetSetting("Days") * 24 * 60 * 60)	
+	if aWatchDB ~= nil and aWatchDB["Auctions"] ~= nil then								
 		for cName, cTable in pairs(aWatchDB["Auctions"]) do
 			auc[#auc + 1] = {["name"] = cName; ["count"] = cTable["count"]; ["time"] = cTable["time"] }
 		end;
 	end;	
 	if byDate then
-		--By date
 		if aw:GetSetting("Asc") then
 			table.sort (auc, function(a,b) return a.time > b.time; end);
 		else
 			table.sort (auc, function(a,b) return a.time < b.time; end);
 		end;	
 	else	
-		--By number of auctions
 		if aw:GetSetting("Asc") then
 			table.sort (auc, function(a,b) return a.count < b.count; end);
 		else
