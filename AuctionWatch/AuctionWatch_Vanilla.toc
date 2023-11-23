@@ -1,8 +1,8 @@
-## Interface: 11404
+## Interface: 11500
 ## Title: Auction Watch -WotLK
 ## Notes: Reminds you to log back into a toon after posting auction(s).
 ## DefaultState: enabled
-## Version: 1.0.3
+## Version: 1.0.4
 ## Author: Gildina
 
 ## SavedVariables: aWatchDB
